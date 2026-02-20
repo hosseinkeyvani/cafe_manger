@@ -1,0 +1,26 @@
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" method="post" id="confirmDeleteForm">
+      <div class="modal-header">
+        <h5 class="modal-title">حذف</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex gap-3 align-items-start">
+          <div class="delete-icon">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+          </div>
+          <div>
+            <div class="fw-semibold mb-1">آیا مطمئن هستید؟</div>
+            <div class="text-secondary small" id="confirmDeleteText">—</div>
+            <div class="text-secondary small mt-2">این عملیات قابل بازگشت نیست.</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">انصراف</button>
+        <button class="btn btn-danger" type="submit">بله، حذف کن</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}خوش آمدید | کافه ورس{% endblock %}
+
+{% block body %}
+<div class="vers-hero">
+  <div class="container py-5">
+    <div class="row align-items-center g-4 py-4">
+      <div class="col-lg-7">
+        <span class="badge rounded-pill text-bg-light-subtle border border-white/20 mb-3">
+          نسخه حرفه‌ای سیستم مدیریت کافه ورس
+        </span>
+        <h1 class="display-5 fw-bold text-white mb-3">
+          همه چیزِ کافه، یک‌جا — منو، مشتری‌ها، سفارش‌ها
+        </h1>
+        <p class="lead text-white-50 mb-4">
+          داشبورد سریع، ساده و شیک برای مدیریت روزانه. با طراحی راست‌چین، ریسپانسیو و مدرن.
+        </p>
+
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-lg btn-cream shadow-sm" href="{{ url_for('dashboard') }}">
+            ورود به داشبورد
+            <i class="bi bi-arrow-left-short ms-1"></i>
+          </a>
+          <a class="btn btn-lg btn-outline-light" href="{{ url_for('dashboard') }}#orders">
+            ثبت سفارش جدید
+          </a>
+        </div>
+
+        <div class="mt-4 d-flex flex-wrap gap-3 text-white-50 small">
+          <div><i class="bi bi-shield-check me-1"></i> فرم‌ها با اعتبارسنجی</div>
+          <div><i class="bi bi-lightning-charge me-1"></i> جستجو و فیلتر سریع</div>
+          <div><i class="bi bi-gear me-1"></i> ویرایش/حذف کامل</div>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="glass-card p-4">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <div class="text-white-50 small">امروز</div>
+              <div class="h5 text-white mb-0" id="todayText">—</div>
+            </div>
+            <div class="icon-bubble">
+              <i class="bi bi-cup-hot-fill"></i>
+            </div>
+          </div>
+
+          <hr class="border-white/20 my-4">
+
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="mini-stat">
+                <div class="label">سرعت ثبت</div>
+                <div class="value">کلیک‌محور</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mini-stat">
+                <div class="label">ظاهر</div>
+                <div class="value">Premium RTL</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="mini-stat">
+                <div class="label">نکته</div>
+                <div class="value">برای ویرایش/حذف روی دکمه‌های هر ردیف بزنید</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <a class="btn w-100 btn-outline-light" href="{{ url_for('dashboard') }}">
+              شروع کنیم
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="vers-wave"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Persian-ish date label (simple)
+  const d = new Date();
+  const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById('todayText').textContent = d.toLocaleDateString('fa-IR', opts);
+</script>
+{% endblock %}

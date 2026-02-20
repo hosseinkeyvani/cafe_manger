@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}یافت نشد | کافه ورس{% endblock %}
+{% block body %}
+<div class="container py-5">
+  <div class="panel p-5 text-center">
+    <div class="display-6 fw-bold mb-2">۴۰۴</div>
+    <div class="h5 mb-3">صفحه پیدا نشد</div>
+    <p class="text-secondary mb-4">آدرسی که وارد کرده‌اید وجود ندارد یا حذف شده است.</p>
+    <a class="btn btn-primary" href="{{ url_for('dashboard') }}">بازگشت به داشبورد</a>
+  </div>
+</div>
+{% endblock %}

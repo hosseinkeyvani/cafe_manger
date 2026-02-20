@@ -1,0 +1,256 @@
+<!-- MENU: Create -->
+<div class="modal fade" id="menuCreateModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" method="post" action="{{ url_for('menu_create') }}">
+      <div class="modal-header">
+        <h5 class="modal-title">افزودن آیتم به منو</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">نام آیتم</label>
+          <input name="name" class="form-control" placeholder="مثلاً لته" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">دسته‌بندی</label>
+          <input name="category" class="form-control" placeholder="مثلاً قهوه / کیک / نوشیدنی سرد" value="عمومی">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">قیمت (تومان)</label>
+          <input name="price" class="form-control" type="number" min="0" value="0" required>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="menuCreateAvailable" name="is_available" checked>
+          <label class="form-check-label" for="menuCreateAvailable">فعال باشد</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">بستن</button>
+        <button class="btn btn-primary" type="submit">ثبت</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MENU: Edit -->
+<div class="modal fade" id="menuEditModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" method="post" id="menuEditForm">
+      <div class="modal-header">
+        <h5 class="modal-title">ویرایش آیتم منو</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="id" id="menuEditId">
+        <div class="mb-3">
+          <label class="form-label">نام آیتم</label>
+          <input name="name" id="menuEditName" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">دسته‌بندی</label>
+          <input name="category" id="menuEditCategory" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">قیمت (تومان)</label>
+          <input name="price" id="menuEditPrice" class="form-control" type="number" min="0" required>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="menuEditAvailable" name="is_available">
+          <label class="form-check-label" for="menuEditAvailable">فعال باشد</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">بستن</button>
+        <button class="btn btn-primary" type="submit">ذخیره</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- CUSTOMER: Create -->
+<div class="modal fade" id="customerCreateModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" method="post" action="{{ url_for('customer_create') }}">
+      <div class="modal-header">
+        <h5 class="modal-title">افزودن مشتری</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-2">
+          <div class="col-md-6">
+            <label class="form-label">نام</label>
+            <input name="first_name" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">نام خانوادگی</label>
+            <input name="last_name" class="form-control" required>
+          </div>
+        </div>
+        <div class="mt-3">
+          <label class="form-label">شماره تماس</label>
+          <input name="phone" class="form-control" inputmode="numeric" placeholder="09xxxxxxxxx" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">بستن</button>
+        <button class="btn btn-primary" type="submit">ثبت</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- CUSTOMER: Edit -->
+<div class="modal fade" id="customerEditModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" method="post" id="customerEditForm">
+      <div class="modal-header">
+        <h5 class="modal-title">ویرایش مشتری</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="customerEditId" name="id">
+        <div class="row g-2">
+          <div class="col-md-6">
+            <label class="form-label">نام</label>
+            <input name="first_name" id="customerEditFirst" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">نام خانوادگی</label>
+            <input name="last_name" id="customerEditLast" class="form-control" required>
+          </div>
+        </div>
+        <div class="mt-3">
+          <label class="form-label">شماره تماس</label>
+          <input name="phone" id="customerEditPhone" class="form-control" inputmode="numeric" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">بستن</button>
+        <button class="btn btn-primary" type="submit">ذخیره</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ORDER: Create -->
+<div class="modal fade" id="orderCreateModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <form class="modal-content" method="post" action="{{ url_for('order_create') }}" id="orderCreateForm">
+      <div class="modal-header">
+        <h5 class="modal-title">ثبت سفارش جدید</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">مشتری</label>
+            <select name="user_id" class="form-select" required>
+              <option value="" selected disabled>انتخاب کنید...</option>
+              {% for u in customers %}
+                <option value="{{ u.ID }}">{{ u.FirstName }} {{ u.LastName }} - {{ u.Phone }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">آیتم منو</label>
+            <select name="item_id" class="form-select" required id="orderCreateItem">
+              <option value="" selected disabled>انتخاب کنید...</option>
+              {% for it in items %}
+                <option value="{{ it.ID }}" data-price="{{ it.Price }}">{{ it.Name }} ({{ it.Category }}) - {{ it.Price|money }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">تعداد</label>
+            <input name="quantity" type="number" min="1" value="1" class="form-control" required id="orderCreateQty">
+          </div>
+          <div class="col-md-5">
+            <label class="form-label">وضعیت</label>
+            <select name="status" class="form-select">
+              <option>در انتظار</option>
+              <option>در حال آماده‌سازی</option>
+              <option>تحویل شد</option>
+              <option>پرداخت شد</option>
+              <option>لغو شد</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">جمع (پیش‌نمایش)</label>
+            <input class="form-control" id="orderCreateTotal" disabled value="—">
+          </div>
+          <div class="col-12">
+            <label class="form-label">یادداشت (اختیاری)</label>
+            <textarea name="notes" class="form-control" rows="2" placeholder="مثلاً بدون شکر، بیرون‌بر و ..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">بستن</button>
+        <button class="btn btn-primary" type="submit">ثبت سفارش</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ORDER: Edit -->
+<div class="modal fade" id="orderEditModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <form class="modal-content" method="post" id="orderEditForm">
+      <div class="modal-header">
+        <h5 class="modal-title">ویرایش سفارش</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <input type="hidden" id="orderEditId" name="id">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">مشتری</label>
+            <select name="user_id" class="form-select" required id="orderEditUser">
+              {% for u in customers %}
+                <option value="{{ u.ID }}">{{ u.FirstName }} {{ u.LastName }} - {{ u.Phone }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">آیتم منو</label>
+            <select name="item_id" class="form-select" required id="orderEditItem">
+              {% for it in items %}
+                <option value="{{ it.ID }}" data-price="{{ it.Price }}">{{ it.Name }} ({{ it.Category }}) - {{ it.Price|money }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">تعداد</label>
+            <input name="quantity" type="number" min="1" class="form-control" required id="orderEditQty">
+          </div>
+          <div class="col-md-5">
+            <label class="form-label">وضعیت</label>
+            <select name="status" class="form-select" id="orderEditStatus">
+              <option>در انتظار</option>
+              <option>در حال آماده‌سازی</option>
+              <option>تحویل شد</option>
+              <option>پرداخت شد</option>
+              <option>لغو شد</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">جمع (پیش‌نمایش)</label>
+            <input class="form-control" id="orderEditTotal" disabled value="—">
+          </div>
+          <div class="col-12">
+            <label class="form-label">یادداشت (اختیاری)</label>
+            <textarea name="notes" class="form-control" rows="2" id="orderEditNotes"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">بستن</button>
+        <button class="btn btn-primary" type="submit">ذخیره</button>
+      </div>
+    </form>
+  </div>
+</div>

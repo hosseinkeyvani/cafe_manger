@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+{% block title %}داشبورد | کافه ورس{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-dark vers-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('welcome') }}">
+      <span class="brand-dot"></span>
+      <span class="fw-bold">VersCafe</span>
+      <span class="opacity-75 small">Admin</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navOffcanvas">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navOffcanvas">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">منو</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav ms-auto gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="#overview"><i class="bi bi-speedometer2 me-1"></i>نمای کلی</a></li>
+          <li class="nav-item"><a class="nav-link" href="#menu"><i class="bi bi-card-list me-1"></i>منو</a></li>
+          <li class="nav-item"><a class="nav-link" href="#customers"><i class="bi bi-people me-1"></i>مشتریان</a></li>
+          <li class="nav-item"><a class="nav-link" href="#orders"><i class="bi bi-receipt me-1"></i>سفارش‌ها</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto gap-lg-2">
+        <li class="nav-item"><a class="nav-link" href="#overview">نمای کلی</a></li>
+        <li class="nav-item"><a class="nav-link" href="#menu">منو</a></li>
+        <li class="nav-item"><a class="nav-link" href="#customers">مشتریان</a></li>
+        <li class="nav-item"><a class="nav-link" href="#orders">سفارش‌ها</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="container py-4" id="overview">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="mb-3">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="row g-3">
+    <div class="col-md-3">
+      <div class="stat-card">
+        <div class="icon"><i class="bi bi-cash-coin"></i></div>
+        <div class="meta">
+          <div class="label">فروش کل</div>
+          <div class="value">{{ stats.revenue|money }} <span class="unit">تومان</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card">
+        <div class="icon"><i class="bi bi-receipt"></i></div>
+        <div class="meta">
+          <div class="label">تعداد سفارش‌ها</div>
+          <div class="value">{{ stats.orders|money }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card">
+        <div class="icon"><i class="bi bi-people"></i></div>
+        <div class="meta">
+          <div class="label">مشتریان</div>
+          <div class="value">{{ stats.customers|money }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card">
+        <div class="icon"><i class="bi bi-card-list"></i></div>
+        <div class="meta">
+          <div class="label">آیتم‌های منو</div>
+          <div class="value">{{ stats.items|money }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container pb-5">
+  <!-- MENU -->
+  <section class="panel" id="menu">
+    <div class="panel-head">
+      <div>
+        <h2 class="h5 mb-1">منو</h2>
+        <div class="text-secondary small">اضافه کردن، ویرایش و حذف آیتم‌ها</div>
+      </div>
+      <div class="d-flex gap-2">
+        <div class="input-group input-group-sm vers-search">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input id="menuSearch" class="form-control" placeholder="جستجو در منو..." oninput="filterTable('menuSearch','menuTable')">
+        </div>
+        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#menuCreateModal">
+          <i class="bi bi-plus-lg me-1"></i> افزودن
+        </button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table align-middle table-hover" id="menuTable">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>نام</th>
+            <th>دسته</th>
+            <th>قیمت</th>
+            <th>وضعیت</th>
+            <th class="text-end">عملیات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for it in items %}
+          <tr>
+            <td class="text-secondary">{{ it.ID }}</td>
+            <td class="fw-semibold">{{ it.Name }}</td>
+            <td><span class="badge text-bg-light border">{{ it.Category }}</span></td>
+            <td>{{ it.Price|money }} <span class="text-secondary small">تومان</span></td>
+            <td>
+              {% if it.IsAvailable %}
+                <span class="badge text-bg-success">فعال</span>
+              {% else %}
+                <span class="badge text-bg-secondary">غیرفعال</span>
+              {% endif %}
+            </td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#menuEditModal"
+                      data-id="{{ it.ID }}"
+                      data-name="{{ it.Name }}"
+                      data-category="{{ it.Category }}"
+                      data-price="{{ it.Price }}"
+                      data-available="{{ it.IsAvailable }}">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger"
+                      onclick="openConfirmDelete('menu', {{ it.ID }}, '{{ it.Name|replace("'","\'") }}')">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-secondary py-4">هیچ آیتمی ثبت نشده است.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CUSTOMERS -->
+  <section class="panel mt-4" id="customers">
+    <div class="panel-head">
+      <div>
+        <h2 class="h5 mb-1">مشتریان</h2>
+        <div class="text-secondary small">مدیریت مشتریان (ویرایش/حذف)</div>
+      </div>
+      <div class="d-flex gap-2">
+        <div class="input-group input-group-sm vers-search">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input id="customerSearch" class="form-control" placeholder="جستجو در مشتریان..." oninput="filterTable('customerSearch','customersTable')">
+        </div>
+        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#customerCreateModal">
+          <i class="bi bi-plus-lg me-1"></i> افزودن
+        </button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table align-middle table-hover" id="customersTable">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>نام</th>
+            <th>نام خانوادگی</th>
+            <th>تلفن</th>
+            <th class="text-end">عملیات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in customers %}
+          <tr>
+            <td class="text-secondary">{{ u.ID }}</td>
+            <td class="fw-semibold">{{ u.FirstName }}</td>
+            <td>{{ u.LastName }}</td>
+            <td dir="ltr" class="text-muted">{{ u.Phone }}</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#customerEditModal"
+                      data-id="{{ u.ID }}"
+                      data-first="{{ u.FirstName }}"
+                      data-last="{{ u.LastName }}"
+                      data-phone="{{ u.Phone }}">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger"
+                      onclick="openConfirmDelete('customer', {{ u.ID }}, '{{ (u.FirstName ~ ' ' ~ u.LastName)|replace("'","\'") }}')">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="5" class="text-center text-secondary py-4">هیچ مشتری‌ای ثبت نشده است.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ORDERS -->
+  <section class="panel mt-4" id="orders">
+    <div class="panel-head">
+      <div>
+        <h2 class="h5 mb-1">سفارش‌ها</h2>
+        <div class="text-secondary small">ثبت، ویرایش و حذف سفارش‌ها</div>
+      </div>
+      <div class="d-flex gap-2">
+        <div class="input-group input-group-sm vers-search">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input id="orderSearch" class="form-control" placeholder="جستجو در سفارش‌ها..." oninput="filterTable('orderSearch','ordersTable')">
+        </div>
+        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#orderCreateModal">
+          <i class="bi bi-plus-lg me-1"></i> سفارش جدید
+        </button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table align-middle table-hover" id="ordersTable">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>مشتری</th>
+            <th>آیتم</th>
+            <th>تعداد</th>
+            <th>جمع</th>
+            <th>وضعیت</th>
+            <th class="text-end">عملیات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for o in orders %}
+          <tr>
+            <td class="text-secondary">{{ o.OrderID }}</td>
+            <td class="fw-semibold">{{ o.FirstName }} {{ o.LastName }}</td>
+            <td>{{ o.ItemName }} <span class="text-secondary small">({{ o.Category }})</span></td>
+            <td>{{ o.Quantity }}</td>
+            <td>{{ o.TotalPrice|money }} <span class="text-secondary small">تومان</span></td>
+            <td>
+              {% if o.Status == 'پرداخت شد' %}
+                <span class="badge text-bg-success">{{ o.Status }}</span>
+              {% elif o.Status == 'لغو شد' %}
+                <span class="badge text-bg-danger">{{ o.Status }}</span>
+              {% else %}
+                <span class="badge text-bg-warning">{{ o.Status }}</span>
+              {% endif %}
+            </td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#orderEditModal"
+                      data-id="{{ o.OrderID }}"
+                      data-user="{{ o.UserID }}"
+                      data-item="{{ o.ItemID }}"
+                      data-qty="{{ o.Quantity }}"
+                      data-status="{{ o.Status }}"
+                      data-notes="{{ o.Notes or '' }}">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger"
+                      onclick="openConfirmDelete('order', {{ o.OrderID }}, 'سفارش #{{ o.OrderID }}')">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="7" class="text-center text-secondary py-4">هیچ سفارشی ثبت نشده است.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="py-4 text-center text-secondary small">
+    ساخته شده برای <span class="fw-semibold">کافه ورس</span> — نسخه حرفه‌ای
+  </footer>
+</main>
+
+<!-- Modals -->
+{% include 'partials/modals.html' %}
+{% include 'partials/confirm_delete.html' %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  setupDashboard({
+    menuUpdateBase: "{{ url_for('menu_update', item_id=0) }}".replace('/0/update', ''),
+    customerUpdateBase: "{{ url_for('customer_update', user_id=0) }}".replace('/0/update',''),
+    orderUpdateBase: "{{ url_for('order_update', order_id=0) }}".replace('/0/update',''),
+    menuDeleteBase: "{{ url_for('menu_delete', item_id=0) }}".replace('/0/delete',''),
+    customerDeleteBase: "{{ url_for('customer_delete', user_id=0) }}".replace('/0/delete',''),
+    orderDeleteBase: "{{ url_for('order_delete', order_id=0) }}".replace('/0/delete',''),
+  });
+</script>
+{% endblock %}

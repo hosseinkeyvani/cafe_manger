@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}خطا | کافه ورس{% endblock %}
+{% block body %}
+<div class="container py-5">
+  <div class="panel p-5 text-center">
+    <div class="display-6 fw-bold mb-2">۵۰۰</div>
+    <div class="h5 mb-3">خطای سرور</div>
+    <p class="text-secondary mb-4">مشکلی پیش آمد. دوباره تلاش کنید.</p>
+    <a class="btn btn-primary" href="{{ url_for('dashboard') }}">بازگشت به داشبورد</a>
+  </div>
+</div>
+{% endblock %}
